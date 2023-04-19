@@ -19,12 +19,20 @@
             <!-- foreach döngüsü ile li kısımlarını döndür -->
             <!-- dropdown içim kişiden seçmesini iste o kısmı aydı döndür db de keyword ver  -->
             <!-- başlık text resim için araştırma yap  -->
-            <li class="nav-item">
-              <a class="nav-link" href="#">Link</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Disabled</a>
-            </li>
+            <?php
+
+            $q = $db->prepare("SELECT * FROM tabs ");
+            $q->execute();
+
+            $tabs = $q->fetchAll(); 
+
+            foreach ($tabs as $key) {
+                echo "<li class='nav-item'>
+                        <a class='nav-link' href='pages/".$key['name']."'>".$key['name']."</a>
+                      </li>";
+            }
+            ?>
+
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="dropdown07" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
               <div class="dropdown-menu" aria-labelledby="dropdown07">
@@ -38,3 +46,5 @@
         </div>
       </div>
     </nav>
+
+    
