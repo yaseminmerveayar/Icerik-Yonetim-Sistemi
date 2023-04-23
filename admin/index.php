@@ -55,12 +55,12 @@
 
                         $navbarCode = $p->fetch(); 
 
-                        $d = $db->prepare("SELECT name FROM colors WHERE code=:code");
+                        $d = $db->prepare("SELECT * FROM colors WHERE code=:code");
                         $d->execute(array('code'=>$navbarCode[0]));
 
                         $navbarColor = $d->fetch(); 
                       ?>
-                    <option><?= $navbarColor[0]  ?></option>
+                    <option value="<?= $navbarColor[2] ?>"><?= $navbarColor[1]  ?></option>
                       <?php
 
                         $q = $db->prepare("SELECT * FROM colors WHERE code!=:code");
