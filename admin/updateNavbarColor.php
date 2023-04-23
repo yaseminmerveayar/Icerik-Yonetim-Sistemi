@@ -5,6 +5,8 @@
         $navbarColor = $_POST['navColorSelect'];
         $updateNavColor = $db->prepare("UPDATE `settings` SET value=? WHERE name = ?");    
         $updateNavColor -> execute([$navbarColor,"navbarColor"]);
+        
+        $message = "Renk Güncellendi";
 
     }
 ?>
