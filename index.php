@@ -17,6 +17,7 @@
 </head>
 <body>
     <?php include("navbar.php"); ?>
+    
     <main role="main">
                 <div class="container-fluid m-5">
                     <div class="row mr-4">

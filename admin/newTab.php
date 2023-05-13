@@ -9,7 +9,7 @@
 
     $errMessage = array();
     $message = array();
-    include("createNewTab.php");
+    // include("createNewTab.php");
     include("createNewPage.php");
 
 
@@ -69,11 +69,16 @@
                       </div>";
               }
               ?>
-                <form class="bg-white" method="POST">
+                <form class="bg-white" method="POST" enctype="multipart/form-data">
 
                   <div class="form-group mb-3">
                       <label for="newTabName">Yeni sekme ismi giriniz</label>
                       <input type="text" name="newTabName" class="form-control" id="newTabName" placeholder="Sekme adı">
+                  </div>
+
+                  <div class="form-group mb-3">
+                    <label for="formFile">Resim Seçiniz</label>
+                    <input class="form-control" type="file" id="formFile" name="formFile">
                   </div>
 
                   <div class="form-group mb-3">

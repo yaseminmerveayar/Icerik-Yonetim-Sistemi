@@ -1,28 +1,51 @@
 <?php
 
-if (isset($_POST['newTabName'])&&isset($_POST['newHeaderName'])&&isset($_POST['editorData'])) {
+if (isset($_POST['newTabName']) || isset($_POST['newHeaderName'])||isset($_POST['editorData']) || isset($_FILES['formFile'])) {
+    if(empty($_POST['newTabName']) || empty($_POST['newHeaderName']) || empty($_POST['editorData'])){
+        $errMessage = "Sekme,Başlık ve Metin boş bırakılamaz";
+    }
+    $fileExtensionsAllowed = ['jpeg','jpg','png'];
+
+    
     $tabName = $_POST['newTabName'];
     $headerName = $_POST['newHeaderName'];
     $editorData = $_POST['editorData'];
+    $image_path_str = "";
 
-    $select = $db->prepare("SELECT id FROM tabs WHERE name=?");
-    $select->execute([$tabName]);
+    $image_path = $_FILES['formFile']; 
 
-    $tab = $select->fetch(); 
+            $target_dir = "../images/";
+            $tmp_name = $image_path['tmp_name'];
+            $file_name = $image_path['name'];
+            $file_size = $image_path['size'];
+            $tmp = explode('.',$file_name);
+            $fileExtension = strtolower(end($tmp));
+   
+            if(!empty($file_name))
+            {
+               if(!file_exists($target_dir))
+               {
+                   mkdir($target_dir);
+               }
 
-    $selectTabName = $db->prepare("SELECT `name` FROM tabs WHERE `name`=? AND id!=? ");
-    $selectTabName->execute([$tabName,$tab[0]]);
+               if (! in_array($fileExtension,$fileExtensionsAllowed)) {
+                $errMessage = "This file extension is not allowed. Please upload a JPEG or PNG file";
+               }
+           
+               if ($file_size > 10000000) {
+                $errMessage = "File exceeds maximum size (10MB)";
+               }
+               if (empty($errMessage)) {  
+                   $uploadPath = $target_dir. $file_name;
+                   $image_path_str = "../../images/" . $file_name;
+   
+                   @move_uploaded_file($tmp_name, $uploadPath);
+               }
+            }
+        if (empty($errMessage)) {  
+        $dir = dirname("../pages/".$tabName."/index.php");
+        mkdir( $dir , 0755, true);
 
-    $checkTabName = $selectTabName->fetch(); 
-
-    if (isset($checkTabName[0])) {
-
-        $errMessage = "Bu sekme ismi zaten mevcut";
-
-    }else {
-
-        $insert = $db->prepare("INSERT INTO pages (title,`text`,tab_id) VALUES (?,?,?)");    
-        $insert -> execute([$headerName,$editorData,$tab[0]]);
         $message = "Sekme eklendi!";
 
         $myfile = fopen("../pages/".$tabName."/index.php", "w") or die("Unable to open file!");
@@ -39,7 +62,7 @@ if (isset($_POST['newTabName'])&&isset($_POST['newHeaderName'])&&isset($_POST['e
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
             <link rel="stylesheet" href="../../bootstrap/css/bootstrap.min.css">
-            <link href="style/navbar.css" rel="stylesheet">
+            <link href="../../style/navbar.css" rel="stylesheet">
 
             <title>'.$tabName.'</title>
         </head>
@@ -65,15 +88,13 @@ if (isset($_POST['newTabName'])&&isset($_POST['newHeaderName'])&&isset($_POST['e
 
                     <?php
 
-                    $q = $db->prepare("SELECT * FROM tabs ");
-                    $q->execute();
+                    $dir    = "../../pages";
+                    $scanned_directory = array_diff(scandir($dir), array("..", "."));
 
-                    $tabs = $q->fetchAll(); 
-
-                    foreach ($tabs as $key) {
-                        echo \'<li class="nav-item">
-                                <a class="nav-link" href=../\'.$key["name"].\'>\'.$key["name"].\'</a>
-                            </li>\';
+                    foreach ($scanned_directory as $key ) {
+                        echo "<li class=\'nav-item\'>
+                                <a class=\'nav-link\' href=\'../../pages/".$key."\'>".$key."</a>
+                            </li>";
                     }
                     ?>
 
@@ -87,8 +108,11 @@ if (isset($_POST['newTabName'])&&isset($_POST['newHeaderName'])&&isset($_POST['e
                 <div class="container-fluid m-5">
                     <div class="row mx-4">
                         <div class="col mx-4">
+                            <div >
+                                <img src="'.$image_path_str.'" alt="" class="img-fluid mx-auto d-block" >
+                            </div>
                             <h1 class=" my-3">'.$headerName.'</h1>
-                            <div class="mr-5">
+                            <div class="mr-5 metin">
                             '.$editorData.'
                             </div>
                         </div>
@@ -102,9 +126,32 @@ if (isset($_POST['newTabName'])&&isset($_POST['newHeaderName'])&&isset($_POST['e
 
     fwrite($myfile, $txt);
     fclose($myfile);
+            }
+
+
+
+    // $select = $db->prepare("SELECT id FROM tabs WHERE name=?");
+    // $select->execute([$tabName]);
+
+    // $tab = $select->fetch(); 
+
+    // $selectTabName = $db->prepare("SELECT `name` FROM tabs WHERE `name`=? AND id!=? ");
+    // $selectTabName->execute([$tabName,$tab[0]]);
+
+    // $checkTabName = $selectTabName->fetch(); 
+
+    // if (isset($checkTabName[0])) {
+
+    //     $errMessage = "Bu sekme ismi zaten mevcut";
+
+    // }else {
+
+        // $insert = $db->prepare("INSERT INTO pages (title,`text`,tab_id) VALUES (?,?,?)");    
+        // $insert -> execute([$headerName,$editorData,$tab[0]]);
+        
     }
 
     
 
-}
+// }
 ?>

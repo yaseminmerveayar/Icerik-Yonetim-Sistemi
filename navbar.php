@@ -1,10 +1,12 @@
 <?php
-  $q = $db->prepare("SELECT value FROM settings WHERE name=:name");
-  $q->execute(array('name'=>"navbarColor"));
+  // $q = $db->prepare("SELECT value FROM settings WHERE name=:name");
+  // $q->execute(array('name'=>"navbarColor"));
 
-  $navbarColor = $q->fetch(); 
+  // $navbarColor = $q->fetch(); 
 ?>
-<nav class="navbar navbar-expand-lg navbar-dark <?= $navbarColor[0] ?>">
+
+<!-- style="background-color:aliceblue;" -->
+<nav id="nav" class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container">
         <a class="navbar-brand" href="index.php">CMS</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample" aria-controls="navbarsExample07" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,14 +21,12 @@
 
             <?php
 
-            $q = $db->prepare("SELECT * FROM tabs ");
-            $q->execute();
+            $dir    = 'pages';
+            $scanned_directory = array_diff(scandir($dir), array('..', '.'));
 
-            $tabs = $q->fetchAll(); 
-
-            foreach ($tabs as $key) {
+            foreach ($scanned_directory as $key ) {
                 echo "<li class='nav-item'>
-                        <a class='nav-link' href='pages/".$key['name']."'>".$key['name']."</a>
+                        <a class='nav-link' href='pages/".$key."'>".$key."</a>
                       </li>";
             }
             ?>

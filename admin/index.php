@@ -8,7 +8,7 @@
     }
 
     $message = array();
-    include("updateNavbarColor.php");
+    // include("updateNavbarColor.php");
 ?>
 <!doctype html>
 <html lang="en">
@@ -17,6 +17,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
+
+    <link href="../style/navbar.css" rel="stylesheet">
 
 
     <title>Admin</title>
@@ -50,39 +52,13 @@
               }
               ?>
                 <form class="bg-white" method="POST">
-                <!-- <div class="form-group mb-3">
+                <div class="form-group mb-3">
                   <label for="navColor">Navbar için bir renk seçiniz</label>
                   <input type="color" class="form-control form-control-color" id="navColor" name="navColor">
-                </div> -->
-                  <div class="form-group">
-                    <label for="navColorSelect">Navbar için bir renk seçiniz</label>
-                    <select class="form-control" id="navColorSelect" name="navColorSelect">
-                      <?php
-                        $p = $db->prepare("SELECT value FROM settings WHERE name=:name");
-                        $p->execute(array('name'=>"navbarColor"));
-
-                        $navbarCode = $p->fetch(); 
-
-                        $d = $db->prepare("SELECT * FROM colors WHERE code=:code");
-                        $d->execute(array('code'=>$navbarCode[0]));
-
-                        $navbarColor = $d->fetch(); 
-                      ?>
-                    <option value="<?= $navbarColor[2] ?>"><?= $navbarColor[1]  ?></option>
-                      <?php
-
-                        $q = $db->prepare("SELECT * FROM colors WHERE code!=:code");
-                        $q->execute(array('code'=>$navbarCode[0]));
-
-                        $colors = $q->fetchAll(); 
-                        foreach ($colors as $key) {
-                            echo "<option value='".$key['code']."'>".$key['name']."</option>";
-                        }
-                        ?>
-                    </select>
-                  </div>
+                </div>
+                  
                   <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                      <button class="btn btn-primary" type="submit" style="padding-left: 2.5rem; padding-right: 2.5rem;">Kaydet</button>
+                      <button class="btn btn-primary" onclick="selectColor()" type="submit" style="padding-left: 2.5rem; padding-right: 2.5rem;">Kaydet</button>
                   </div>
                 </form>
               </div>
@@ -95,6 +71,8 @@
 
 
     <?php  include("adminJs.html"); ?>
-    
+
+   <script src="deneme.js"></script>
+   <!-- <script src="bootstrap/js/bootstrap.min.js"></script> -->
   </body>
 </html>

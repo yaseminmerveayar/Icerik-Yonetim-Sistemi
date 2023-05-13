@@ -1,12 +1,12 @@
 <?php
 
-    if (isset($_POST['navColorSelect'])) {
+    // if (isset($_POST['navColorSelect'])) {
 
-        $navbarColor = $_POST['navColorSelect'];
-        $updateNavColor = $db->prepare("UPDATE `settings` SET value=? WHERE name = ?");    
-        $updateNavColor -> execute([$navbarColor,"navbarColor"]);
+    //     $navbarColor = $_POST['navColorSelect'];
+    //     $updateNavColor = $db->prepare("UPDATE `settings` SET value=? WHERE name = ?");    
+    //     $updateNavColor -> execute([$navbarColor,"navbarColor"]);
         
-        $message = "Renk Güncellendi";
+    //     $message = "Renk Güncellendi";
 
-    }
+    // }
 ?>
