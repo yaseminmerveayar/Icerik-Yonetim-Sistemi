@@ -20,6 +20,15 @@ if (isset($_POST['newTabName']) || isset($_POST['newHeaderName'])||isset($_POST[
             $file_size = $image_path['size'];
             $tmp = explode('.',$file_name);
             $fileExtension = strtolower(end($tmp));
+
+            $dir    = '../pages';
+            $scanned_directory = array_diff(scandir($dir), array('..', '.'));
+
+            foreach ($scanned_directory as $key ) {
+                if ($tabName == $key) {
+                    $errMessage = "Bu sekme adı zaten mevcut";
+                };
+            }
    
             if(!empty($file_name))
             {

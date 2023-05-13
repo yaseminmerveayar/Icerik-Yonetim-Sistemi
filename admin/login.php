@@ -28,9 +28,8 @@
         $results = $q->fetch(); 
 
         if(isset($results[0])){
-            $_SESSION['ID'] = $results[0];
-            $_SESSION['NAME'] = $results[1];
-            $_SESSION['SURNAME'] = $results[2];
+            $_SESSION['MESSAGE'] = "";
+            $_SESSION['ERROR'] = "";
             $_SESSION['LOGGED'] = true;
 
             header("Location: index.php"); 

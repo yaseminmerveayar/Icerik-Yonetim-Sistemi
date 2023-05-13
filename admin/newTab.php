@@ -40,6 +40,12 @@
 
     <!-- Custom styles for this template -->
     <link href="../style/dashboard.css" rel="stylesheet">
+    <style>
+      .form-group.mb-3 .control-label:after {
+        content:"*";
+        color:red;
+      }
+    </style>
   </head>
 
   <body>
@@ -72,7 +78,7 @@
                 <form class="bg-white" method="POST" enctype="multipart/form-data">
 
                   <div class="form-group mb-3">
-                      <label for="newTabName">Yeni sekme ismi giriniz</label>
+                      <label for="newTabName" class="control-label">Yeni sekme ismi giriniz</label>
                       <input type="text" name="newTabName" class="form-control" id="newTabName" placeholder="Sekme adı">
                   </div>
 
@@ -82,13 +88,14 @@
                   </div>
 
                   <div class="form-group mb-3">
-                      <label for="newHeaderName">Bir Başlık Giriniz</label>
+                      <label for="newHeaderName" class="control-label">Bir Başlık Giriniz</label>
                       <input type="text" name="newHeaderName" class="form-control" id="newHeaderName" placeholder="Başlık">
                   </div>
 
                   <div class="form-group mb-3">
-                    <label for="editorData">Sayfa için bir metin yazın</label>
-                    <textarea id="summernote" id="editorData" name="editorData"></textarea>
+                    <label for="editorData" class="control-label">Sayfa için bir metin yazın</label>
+                    <textarea id="summernote" id="editorData" name="editorData" class="form-control"></textarea>
+
                   </div>
                   
                   <div class="d-grid gap-2 d-md-flex justify-content-md-end">

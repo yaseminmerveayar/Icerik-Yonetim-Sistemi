@@ -44,8 +44,8 @@
                             <!-- <th scope="col"></th> -->
                             <th scope="col">Sekme Adı</th>
                             <!-- <th scope="col">Tip</th> -->
-                            <th scope="col"></th> 
-                            <th scope="col"></th>
+                            <th scope="col" class="text-right">Görüntüle</th> 
+                            <th scope="col" class="text-right">Sil</th>
                             </tr>
                         </thead>
                         <tbody>
