@@ -15,7 +15,7 @@ if (isset($_POST['newTab_Name']) || isset($_POST['newHeader_Name'])||isset($_POS
   
     foreach ($dm->getElementsByTagName("img") as $a) {
       $oldImage = $a->getAttribute("src");
-  }
+    }
   
     
     $tab_Name = $_POST['newTab_Name'];
@@ -25,15 +25,15 @@ if (isset($_POST['newTab_Name']) || isset($_POST['newHeader_Name'])||isset($_POS
   
     $image_path = $_FILES['form_File']; 
   
-            $target_dir = "../images/";
-            $tmp_name = $image_path['tmp_name'];
-            $file_name = $image_path['name'];
-            $file_size = $image_path['size'];
-            $tmp = explode('.',$file_name);
-            $fileExtension = strtolower(end($tmp));
+        $target_dir = "../images/";
+        $tmp_name = $image_path['tmp_name'];
+        $file_name = $image_path['name'];
+        $file_size = $image_path['size'];
+        $tmp = explode('.',$file_name);
+        $fileExtension = strtolower(end($tmp));
 
-            $dir    = '../pages';
-            $scanned_directory = array_diff(scandir($dir), array('..', '.'));
+        $dir    = '../pages';
+        $scanned_directory = array_diff(scandir($dir), array('..', '.'));
 
             foreach ($scanned_directory as $key ) {
                 if ($tab_Name == $key && $tabName != $key) {
@@ -62,11 +62,12 @@ if (isset($_POST['newTab_Name']) || isset($_POST['newHeader_Name'])||isset($_POS
                    @move_uploaded_file($tmp_name, $uploadPath);
   
                    $dir = "../pages/".$tabName."";
+
         foreach(glob($dir . '/*') as $file) {
-  
             unlink($file);
-            }
-            rename("../pages/".$tabName, "../pages/".$tab_Name);
+        }
+
+        rename("../pages/".$tabName, "../pages/".$tab_Name);
   
         $myfile = fopen("../pages/".$tab_Name."/index.php", "w") or die("Unable to open file!");
   
@@ -87,13 +88,7 @@ if (isset($_POST['newTab_Name']) || isset($_POST['newHeader_Name'])||isset($_POS
             <title>'.$tab_Name.'</title>
         </head>
         <body>
-        <?php
-            $q = $db->prepare("SELECT value FROM settings WHERE name=:name");
-            $q->execute(array("name"=>"navbarColor"));
-  
-            $navbarColor = $q->fetch(); 
-        ?>
-        <nav class="navbar navbar-expand-lg navbar-dark <?= $navbarColor[0] ?>">
+        <nav class="navbar navbar-expand-lg navbar-dark " style="">
             <div class="container">
                 <a class="navbar-brand" href="../../index.php">CMS</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample" aria-controls="navbarsExample07" aria-expanded="false" aria-label="Toggle navigation">
@@ -147,7 +142,7 @@ if (isset($_POST['newTab_Name']) || isset($_POST['newHeader_Name'])||isset($_POS
     fwrite($myfile, $txt);
     fclose($myfile);
 
-  $tabName = $tab_Name;
+    $tabName = $tab_Name;
 
         $_SESSION['MESSAGE'] = "Sekme Güncellendi!";
                }
@@ -178,13 +173,7 @@ if (isset($_POST['newTab_Name']) || isset($_POST['newHeader_Name'])||isset($_POS
             <title>'.$tab_Name.'</title>
         </head>
         <body>
-        <?php
-            $q = $db->prepare("SELECT value FROM settings WHERE name=:name");
-            $q->execute(array("name"=>"navbarColor"));
-  
-            $navbarColor = $q->fetch(); 
-        ?>
-        <nav class="navbar navbar-expand-lg navbar-dark <?= $navbarColor[0] ?>">
+        <nav class="navbar navbar-expand-lg navbar-dark " style="">
             <div class="container">
                 <a class="navbar-brand" href="../../index.php">CMS</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample" aria-controls="navbarsExample07" aria-expanded="false" aria-label="Toggle navigation">

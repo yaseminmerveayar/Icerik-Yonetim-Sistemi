@@ -67,12 +67,12 @@
                 ?>
 
               <?php  
-                if (isset($_SESSION['ERROR'])) {
+                if (!empty($_SESSION['ERROR'])) {
                   echo "<div class='alert alert-danger text-center m-5' role='alert'>
                   ".$_SESSION['ERROR']."
                       </div>";
                       unset( $_SESSION['ERROR']);
-                }elseif(isset($_SESSION['MESSAGE'])) {
+                }elseif(!empty($_SESSION['MESSAGE'])) {
                   echo "<div class='alert alert-success text-center m-5' role='alert'>
                   ".$_SESSION['MESSAGE']."
                       </div>";
