@@ -1,22 +1,8 @@
 <?php
 
     session_start();
-    require('database.php');
 
     $tabName = $_GET['name'];
-
-    // $select = $db->prepare("SELECT name FROM tabs WHERE id=?");
-    // $select->execute([$tabId]);
-
-    // $tabName = $select->fetch(); 
-
-    // $sql = "DELETE  FROM tabs WHERE id=?";
-    // $delete= $db->prepare($sql);
-    // $delete->execute([$tabId]);
-
-    // $sql2 = "DELETE  FROM pages WHERE tab_id=?";
-    // $deletePage= $db->prepare($sql2);
-    // $deletePage->execute([$tabId]);
 
     deleteAll("../pages/".$tabName."");
 

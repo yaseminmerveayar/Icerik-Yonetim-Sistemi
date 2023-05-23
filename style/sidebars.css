@@ -1,0 +1,36 @@
+
+.b-example-vr {
+  flex-shrink: 0;
+  width: 1.5rem;
+  height: 100vh;
+}
+body {
+min-height: 100vh;
+min-height: -webkit-fill-available;
+} */
+
+html {
+height: -webkit-fill-available;
+}
+
+main {
+
+height: 100vh;
+height: -webkit-fill-available;
+max-height: 100vh; 
+overflow-x: hidden;
+overflow-y: hidden;
+
+}
+
+.navi {
+overflow-x: auto;
+overflow-y: hidden;
+width: 250px;
+}
+
+.scrollarea {
+overflow-y: auto;
+}
+
+

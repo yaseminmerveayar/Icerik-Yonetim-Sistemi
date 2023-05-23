@@ -1,6 +1,5 @@
 <?php 
     session_start();
-    require("database.php");
 
     if (!$_SESSION['LOGGED']) {
         header("Location: login.php"); 
@@ -90,6 +89,22 @@
                   <div class="form-group mb-3">
                       <label for="newHeaderName" class="control-label">Bir Başlık Giriniz</label>
                       <input type="text" name="newHeaderName" class="form-control" id="newHeaderName" placeholder="Başlık">
+                  </div>
+
+                  <div class="form-group mb-3">
+                    <label for="" class="control-label">Navbar için konum seçiniz</label>
+                    <div class="form-check ">
+                      <input class="form-check-input" type="radio" name="flexRadio" value="top" id="flexRadio1" >
+                      <label class="form-check-label" for="flexRadio1">
+                        Üst Navbar
+                      </label>
+                    </div>
+                    <div class="form-check mb-3">
+                      <input class="form-check-input" type="radio" name="flexRadio" value="side" id="flexRadio2" >
+                      <label class="form-check-label" for="flexRadio2">
+                        Yan Navbar
+                      </label>
+                    </div>
                   </div>
 
                   <div class="form-group mb-3">

@@ -1,6 +1,5 @@
 <?php 
     session_start();
-    require("database.php");
 
     if (!$_SESSION['LOGGED']) {
         header("Location: login.php"); 
@@ -8,8 +7,6 @@
     }
 
     $tabName = $_GET['name'];
-
-
 ?>
 <!doctype html>
 <html lang="en">
@@ -110,6 +107,32 @@
                       <input type="text" name="newHeader_Name" class="form-control" id="newHeader_Name" value="'.$a->nodeValue.'">
                     </div>';
                 }
+                $string = preg_replace("/\s+/", "", $htmlText);
+                $navPosition=substr($string,-7,4);
+
+                $side = "";
+                $top = "";
+                if ($navPosition == "side") {
+                  $side = "checked";
+                }else{
+                  $top = "checked";
+                }
+                echo '<div class="form-group mb-3">
+                <label for="" class="control-label">Navbar için konum seçiniz</label>
+                <div class="form-check ">
+                  <input class="form-check-input" type="radio" name="flexRadio" value="top" id="flexRadio1" '.$top.'>
+                  <label class="form-check-label" for="flexRadio1">
+                    Üst Navbar
+                  </label>
+                </div>
+                <div class="form-check mb-3">
+                  <input class="form-check-input" type="radio" name="flexRadio" value="side" id="flexRadio2" '.$side.'>
+                  <label class="form-check-label" for="flexRadio2">
+                    Yan Navbar
+                  </label>
+                </div>
+              </div>';
+
                 preg_match('/<div class="mr-5 metin">(.*?)<\/div>/s', $htmlText, $match);
                   $text = $match[1];
                  echo '<div class="form-group mb-3">
@@ -117,6 +140,7 @@
                     <textarea id="summernote" id="editor_Data" name="editor_Data">'.$text.'</textarea>
                   </div>';
   ?>
+
                   <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                       <button class="btn btn-primary" type="submit" style="padding-left: 2.5rem; padding-right: 2.5rem;">Güncelle</button>
                   </div>

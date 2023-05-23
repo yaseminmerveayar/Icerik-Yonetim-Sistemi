@@ -1,7 +1,8 @@
 <?php
     session_start();
-    require("database.php");
     $errMessage = array();
+    $email = "admin@admin.com";
+    $pass = "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918";
 ?>
 
 <!DOCTYPE html>
@@ -21,22 +22,18 @@
         
     if(isset($_POST['mail']) && isset($_POST['password'])){
         $password = hash("sha256", $_POST['password']);
+        $mail = $_POST['mail'];
 
-        $q = $db->prepare("SELECT * FROM users WHERE mail= :mail AND password= :password");
-        $q->execute(array('mail'=>$_POST['mail'], 'password'=>$password));
-
-        $results = $q->fetch(); 
-
-        if(isset($results[0])){
+        if($pass == $password && $mail == $email){
             $_SESSION['MESSAGE'] = "";
             $_SESSION['ERROR'] = "";
             $_SESSION['LOGGED'] = true;
 
             header("Location: index.php"); 
-                exit();
+            exit();
+
         }else{
             $errMessage = "Kullanıcı adı veya şifre yanlış!";
-            
         }
     }
 

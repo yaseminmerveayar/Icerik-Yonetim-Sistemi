@@ -1,6 +1,5 @@
 <?php 
     session_start();
-    require('database.php');
 
     if (!$_SESSION['LOGGED']) {
         header("Location: login.php"); 
@@ -10,16 +9,11 @@
     $message = array();
     include("updateNavbarColor.php");
 
-    $dir    = '../pages';
-    $scanned_directory = array_diff(scandir($dir), array('..', '.'));
-
     $navColor="";
     $navTextColor="";
     $text="";
 
-    foreach ($scanned_directory as $key ) {
-
-      $htmlText = file_get_contents("../pages/".$key."/index.php");
+      $htmlText = file_get_contents("../index.php");
 
       $dom = new DOMDocument('1.0', 'UTF-8');
       $dom->encoding='UTF-8';
@@ -38,7 +32,7 @@
         $text = $a->nodeValue;
         break;
       }
-  }
+  
 
 ?>
 <!doctype html>
@@ -98,6 +92,7 @@
                   <label for="logo">Navbar için şirket adı giriniz</label>
                   <input type="text" class="form-control" id="logo" name="logo" value="<?=$text?>">
                 </div>
+                
                   
                   <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                       <button class="btn btn-primary" type="submit" style="padding-left: 2.5rem; padding-right: 2.5rem;">Kaydet</button>

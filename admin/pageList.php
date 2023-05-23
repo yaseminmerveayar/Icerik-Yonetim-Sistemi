@@ -1,6 +1,5 @@
 <?php 
     session_start();
-    require('database.php');
 
     if (!$_SESSION['LOGGED']) {
         header("Location: login.php"); 
@@ -41,9 +40,7 @@
                         <table class="table table-hover table-striped ">
                         <thead>
                             <tr>
-                            <!-- <th scope="col"></th> -->
                             <th scope="col">Sekme Adı</th>
-                            <!-- <th scope="col">Tip</th> -->
                             <th scope="col" class="text-right">Görüntüle</th> 
                             <th scope="col" class="text-right">Sil</th>
                             </tr>
@@ -52,29 +49,13 @@
 
                             <?php
 
-                            // $select = $db->prepare("SELECT * FROM pages ");
-                            // $select->execute();
-
-                            // $pages = $select->fetchAll();
-
-                            // foreach(glob("../pages" . '/*') as $file) {
-                            //     echo 
-                            //     }
-
                                 $dir    = '../pages';
                                 $scanned_directory = array_diff(scandir($dir), array('..', '.'));
 
-
-
                             foreach ($scanned_directory as $key ) {
-                                // $select = $db->prepare("SELECT * FROM tabs WHERE id=? ");
-                                // $select->execute([$key['tab_id']]);
-
-                                // $tab = $select->fetch();
 
                                 echo '<tr>
-                                
-                                
+                                                                
                                 <td>'.$key.'</td>
                                 <td><div class="d-grid gap-2 d-md-flex justify-content-md-end mr-4"><button type="button" class="btn btn-primary btn-sm" onClick="location.href=`updatePage.php?name='.$key.'`">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
@@ -90,7 +71,6 @@
                             </tr>';
                             }
                             
-
                             ?>
                             
                         </tbody>
