@@ -15,18 +15,24 @@
 
       $htmlText = file_get_contents("../index.php");
 
+      // var olan tema değerlerini almak için home sayfası html'ini dom ile alıyoruz 
       $dom = new DOMDocument('1.0', 'UTF-8');
       $dom->encoding='UTF-8';
       @$dom->loadHTML(mb_convert_encoding($htmlText, 'HTML-ENTITIES', 'UTF-8'));
 
+      // navbar rengini alıyoruz 
       foreach ($dom->getElementsByTagName("nav") as $a) {
         $attr = $a->getAttribute("style");
+        // sadece renk kodunu almak için substr fonk. kullandık 
         $temp=substr($attr,17,-1);
         $navColor=$temp;
         break;
       }
+
+      // navbar metin rengi ve logo değerlerini alıyoruz
       foreach ($dom->getElementsByTagName("a") as $a) {
         $attr = $a->getAttribute("style");
+        // sadece renk kodunu almak için substr fonk. kullandık 
         $temp=substr($attr,6,-1);
         $navTextColor=$temp;
         $text = $a->nodeValue;
@@ -70,13 +76,14 @@
           <div class="row">
               <div class="col">
               <?php  
+              // mesaj var ise göstekmesi için 
                 if(!empty($message)) {
                   echo "<div class='alert alert-success text-center m-5' role='alert'>
                       $message
                       </div>";
               }
               ?>
-
+                <!-- form kısmında yukarıda almış olduğumuz degerleri gösteriyoruz  -->
                 <form class="bg-white" method="POST" >
                 <div class="form-group mb-3">
                   <label for="navColor">Navbar için bir renk seçiniz</label>

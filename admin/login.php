@@ -19,11 +19,14 @@
 </head>
 <body>
 <?php
-        
+    // kişi forma değerleri girdi ise döngüye giriyoruz 
     if(isset($_POST['mail']) && isset($_POST['password'])){
+        // verilen parolayı şifre formatına dönüştürüyoruz 
         $password = hash("sha256", $_POST['password']);
+        // verilen maili değişkene atıyoruz 
         $mail = $_POST['mail'];
 
+        // bizim değerlerimiz ile aynı olup olmadığnı kontrol ediyoruz 
         if($pass == $password && $mail == $email){
             $_SESSION['MESSAGE'] = "";
             $_SESSION['ERROR'] = "";
@@ -42,7 +45,9 @@
 
     <div class="container-fluid h-custom mt-5">
     <?php  
+    // hata mesajı verdirmek için 
         if (!empty($errMessage)) {
+            // eğer mesaj arrayi boş değilse mesajı gösteriyor 
             echo "<div class='alert alert-danger text-center m-5' role='alert'>
                 $errMessage
                 </div>";
@@ -54,6 +59,7 @@
             class="img-fluid" alt="Sample image">
         </div>
         <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1 mt-5">
+            <!-- login formunu olusturuyoruz  -->
             <form class="bg-white" method="POST">
 
             <!-- Email input -->

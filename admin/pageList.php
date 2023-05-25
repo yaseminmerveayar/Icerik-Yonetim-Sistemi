@@ -37,6 +37,7 @@
                 <div class="container-fluid m-2">
                     <div class="row">
                         <div class="col">
+                            <!-- degerleri görüntülemek için tablo oluşturuyoruz  -->
                         <table class="table table-hover table-striped ">
                         <thead>
                             <tr>
@@ -48,21 +49,25 @@
                         <tbody>
 
                             <?php
-
+                                // pages altındaki sekme isimlerini alıyoruz 
                                 $dir    = '../pages';
                                 $scanned_directory = array_diff(scandir($dir), array('..', '.'));
 
+                                // tablo içerisinde göstermek için foreach ile  tek tek dönüyoruz 
                             foreach ($scanned_directory as $key ) {
 
-                                echo '<tr>
-                                                                
-                                <td>'.$key.'</td>
+                                // bir satır içerisinde ilk olarak sekme adı başlığı altına sekme adını yazdırıyoruz 
+                                echo '<tr>                                             
+                                <td>'.$key.'</td>';
+                                // Görüntüle kısmı için svg tagı içinde göz ikonunu veriyoruz ve onClick ile updatePage'e yönlendirmesini yapıyoruz
+                                echo '
                                 <td><div class="d-grid gap-2 d-md-flex justify-content-md-end mr-4"><button type="button" class="btn btn-primary btn-sm" onClick="location.href=`updatePage.php?name='.$key.'`">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
                                 <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
                                 <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
-                                </svg></button></div></td>
-
+                                </svg></button></div></td>';
+                                // Sil kısmı için svg tagı içinde çöp kutusu ikonunu veriyoruz ve onClick ile deletePage'e yönlendirmesini yapıyoruz
+                                echo '
                                 <td><div class="d-grid gap-2 d-md-flex justify-content-md-end mr-4"><button type="button" class="btn btn-danger btn-sm" onClick="location.href=`deletePage.php?name='.$key.'`">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                                 <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"/>

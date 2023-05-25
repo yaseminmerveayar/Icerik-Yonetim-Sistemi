@@ -1,14 +1,17 @@
 <?php 
     session_start();
 
+    // eger kisi giris yapmamıs ise login sayfasına yönlendiriliyor 
     if (!$_SESSION['LOGGED']) {
         header("Location: login.php"); 
         exit();
     }
 
+    // kullanıcı mesajları için array olusturduk 
     $errMessage = array();
     $message = array();
-    // include("createNewTab.php");
+
+    // yeni sayfa oluşturma sayfamızı koda dahil ettik 
     include("createNewPage.php");
 
 
@@ -39,6 +42,8 @@
 
     <!-- Custom styles for this template -->
     <link href="../style/dashboard.css" rel="stylesheet">
+
+    <!-- formda bulunan zorunlu kısımlar için oluşturulan kırmızı * isareti  -->
     <style>
       .form-group.mb-3 .control-label:after {
         content:"*";
@@ -64,6 +69,7 @@
               <div class="col">
 
               <?php  
+              // hata mesajları için 
                 if (!empty($errMessage)) {
                   echo "<div class='alert alert-danger text-center m-5' role='alert'>
                       $errMessage
@@ -74,6 +80,7 @@
                       </div>";
               }
               ?>
+              <!-- yeni sayfa oluşturmak için formumuzu olusturuyoruz  -->
                 <form class="bg-white" method="POST" enctype="multipart/form-data">
 
                   <div class="form-group mb-3">

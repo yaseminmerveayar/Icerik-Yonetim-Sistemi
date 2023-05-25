@@ -21,11 +21,14 @@
             <div class="collapse navbar-collapse" id="navbarsExample">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="../../index.php" style="color:#ffffff;">Home</a>
+                    <a class="nav-link" href="index.php" style="color:#ffffff;">Home</a>
                 </li>
-                <?php $dir    = "pages";
+                <?php 
+                // sekme isimleri icin pages dosyası altındaki dosya isimlerini alıyoruz 
+                $dir    = "pages";
                 $scanned_directory = array_diff(scandir($dir), array("..", "."));
 
+                // isimleri foreach döngüsü ile yazdırıyoruz 
                 foreach ($scanned_directory as $key ) {
                     echo '<li class="nav-item active">
                     <a class="nav-link" style="color:#ffffff;" href="pages/'.$key.'">'.$key.'</a>

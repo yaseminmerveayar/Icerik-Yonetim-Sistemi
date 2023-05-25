@@ -5,7 +5,7 @@
         header("Location: login.php"); 
         exit();
     }
-
+    // url'den sekme adını alıyoruz
     $tabName = $_GET['name'];
 ?>
 <!doctype html>
@@ -52,10 +52,8 @@
           <div class="row">
               <div class="col">
               <?php
-              if (!empty($tab)) {
-                $tabName = $tab;
-              }
 
+                // ihtiyacımız olan sekmenin index.php kodunu dom ile alıyoruz 
                 $htmlText = file_get_contents("../pages/".$tabName."/index.php");
 
                 $dom = new DOMDocument();
@@ -64,6 +62,7 @@
                 ?>
 
               <?php  
+              // hata mesajları için oluşturulan kısım 
                 if (!empty($_SESSION['ERROR'])) {
                   echo "<div class='alert alert-danger text-center m-5' role='alert'>
                   ".$_SESSION['ERROR']."
@@ -85,6 +84,7 @@
                   </div>
 
                 <?php
+                    // dom ile resim dosyasının yolunu src icinden alıyoruz 
                     foreach ($dom->getElementsByTagName("img") as $a) {
                         $image_path = $a->getAttribute("src");
                         $str = substr($image_path, 3);
@@ -92,6 +92,7 @@
 
                 ?>
                 <div class="mb-3">
+                  <!-- aldıgımız resmi kullanıcının görmesi için -->
                     <img src="<?= $str ?>" alt="" class="img-fluid mx-auto d-block">
                 </div>
                   <div class="form-group mb-3">
@@ -100,18 +101,22 @@
                   </div>
 
                 <?php   
-
+                // dom ile baslıgı alıyoruz h1 tagı ile 
                 foreach ($dom->getElementsByTagName("h1") as $a) {
                 echo  '<div class="form-group mb-3">
                       <label for="newHeaderName">Bir Başlık Giriniz</label>
                       <input type="text" name="newHeader_Name" class="form-control" id="newHeader_Name" value="'.$a->nodeValue.'">
                     </div>';
                 }
+                // navbar konumunu alırken sıkıntı yasamamak icin tüm boşlukları kaldırıyoruz 
                 $string = preg_replace("/\s+/", "", $htmlText);
+                // navbar konumunu bilmek için html kodlarının sonuna yazmış olduğumuz yorum satırından bilgiyi çekiyoruz 
                 $navPosition=substr($string,-7,4);
 
                 $side = "";
                 $top = "";
+
+                // var olan konum degerine göre değişkenleri atıyoruz 
                 if ($navPosition == "side") {
                   $side = "checked";
                 }else{
@@ -133,6 +138,7 @@
                 </div>
               </div>';
 
+                // metin icin belirli div icerisindeki tüm degerleri preg_match fonk. ile alıyoruz 
                 preg_match('/<div class="mr-5 metin">(.*?)<\/div>/s', $htmlText, $match);
                   $text = $match[1];
                  echo '<div class="form-group mb-3">
@@ -153,6 +159,7 @@
       </div>
     </div>
 
+    <!-- summernote text editor için default degerler  -->
     <script>
       $('#summernote').summernote({
         placeholder: 'Metni giriniz ...',
@@ -165,6 +172,3 @@
     
   </body>
 </html>
-<?php
-
-?>

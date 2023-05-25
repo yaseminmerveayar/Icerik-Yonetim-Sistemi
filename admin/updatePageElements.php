@@ -1,42 +1,53 @@
 <?php
     session_start();
+    // url'den sekme adını alıyoruz
     $tabName = $_GET['name'];
 
+    // form'dan bilgi gelip gelmediğine göre işlemi başlatıyoruz
 if (isset($_POST['newTab_Name']) || isset($_POST['newHeader_Name'])||isset($_POST['editor_Data']) || isset($_FILES['form_File']) || isset($_POST['flexRadio'])) {
     
+    // gerekli kısımların doluluğunu kontrol ediyoruz
     if(empty($_POST['newTab_Name']) || empty($_POST['newHeader_Name']) || empty($_POST['editor_Data']) || empty($_POST['flexRadio'])){
         $_SESSION['ERROR'] = "Sekme,Başlık ve Metin boş bırakılamaz";
     }
 
+    // kabul edeceğimiz dosya uzantılarını belirtiyoruz
     $fileExtensionsAllowed = ['jpeg','jpg','png'];
   
+    // sayfanın tema özelliklerini almak için dom ile html sayfasını alıyoruz 
     $htmlTextOld = file_get_contents("../pages/".$tabName."/index.php");
     $dm = new DOMDocument();
     $dm->loadHTML($htmlTextOld);
   
+    // yeni resim seçilmemesine karşı olarak eski resim adresini alıyoruz 
     foreach ($dm->getElementsByTagName("img") as $a) {
       $oldImage = $a->getAttribute("src");
     }
 
+    // navbar rengini alıyoruz 
     foreach ($dm->getElementsByTagName("nav") as $a) {
         $navColor = $a->getAttribute("style");
         break;
     }
 
+    // navbar metin rengini ve logo adını alıyoruz 
     foreach ($dm->getElementsByTagName("a") as $a) {
     $navTextColor = $a->getAttribute("style");
     $text = $a->nodeValue;
     break;
     }
   
+    // form'dan gelen değerleri değişkenlere yazdırıyoruz 
     $tab_Name = $_POST['newTab_Name'];
     $headerName = $_POST['newHeader_Name'];
     $editorData = $_POST['editor_Data'];
     $navPosition = $_POST['flexRadio'];
     $image_path_str = "";
   
+    // form'dan gelen dosya bilgilerini değişkenlere yazdırıyoruz 
     $image_path = $_FILES['form_File']; 
   
+        // dosya işlemleri
         $target_dir = "../images/";
         $tmp_name = $image_path['tmp_name'];
         $file_name = $image_path['name'];
@@ -44,6 +55,7 @@ if (isset($_POST['newTab_Name']) || isset($_POST['newHeader_Name'])||isset($_POS
         $tmp = explode('.',$file_name);
         $fileExtension = strtolower(end($tmp));
 
+        // pages içindeki dosya isimlerini kontrol ederek aynı olmaması için bir döngü oluşturuyoruz 
         $dir    = '../pages';
         $scanned_directory = array_diff(scandir($dir), array('..', '.'));
 
@@ -53,40 +65,51 @@ if (isset($_POST['newTab_Name']) || isset($_POST['newHeader_Name'])||isset($_POS
                     break;
                 };
             }
+            // eğer form ile bir dosya gönderildiyse buraya giriyoruz
             if(!empty($file_name))
             {
+                // dosya zaten var mı kontrol 
                if(!file_exists($target_dir))
                {
                    mkdir($target_dir);
                }
   
+            //    dosya uzantısı kontrol 
                if (! in_array($fileExtension,$fileExtensionsAllowed)) {
                 $_SESSION['ERROR'] = "This file extension is not allowed. Please upload a JPEG or PNG file";
                }
            
+            //    dosya boyutu kontrol 
                if ($file_size > 10000000) {
                 $_SESSION['ERROR'] = "File exceeds maximum size (10MB)";
                }
 
+            //    eğer hata mesajı yok ise 
                if (empty($_SESSION['ERROR'])) 
                {  
+                    // dosyayı yükleyeceğimiz dosya yolunu veriyoruz
                    $uploadPath = $target_dir. $file_name;
                    $image_path_str = "../../images/" . $file_name;
-   
+
+                //    dosyayı adrese yüklüyoruz
                    @move_uploaded_file($tmp_name, $uploadPath);
   
                    $dir = "../pages/".$tabName."";
 
+                //    var olan dosyamızı siliyoruz 
                     foreach(glob($dir . '/*') as $file) {
                         unlink($file);
                     }
 
+                    // sekme adını güncelliyoruz
                     rename("../pages/".$tabName, "../pages/".$tab_Name);
             
+                    // index.php adlı dosyayı açıyoruz
                     $myfile = fopen("../pages/".$tab_Name."/index.php", "w") or die("Unable to open file!");
 
+                    // navbar pozisyonuna göre yazacağımız html text'i degisiyor
                     if ($navPosition == "top") {
-
+                        // eger navbar basta ise ve yeni resim dosyası varsa burası yazdırılıyor
                         $txt = '<!DOCTYPE html>
                         <html lang="tr">
                         <head>
@@ -151,6 +174,7 @@ if (isset($_POST['newTab_Name']) || isset($_POST['newHeader_Name'])||isset($_POS
                         </body>
                         </html><!-- top -->';
                     }else{
+                        // eger navbar yanda ise ve yeni resim dosyası varsa burası yazdırılıyor
                         $txt = '<!DOCTYPE html>
                         <html lang="tr">
                         <head>
@@ -211,27 +235,29 @@ if (isset($_POST['newTab_Name']) || isset($_POST['newHeader_Name'])||isset($_POS
                         </body>
                         </html><!--side-->';
                     }
-            
+                    // text'i yazıp dosyayı kapatıyoruz
                     fwrite($myfile, $txt);
                     fclose($myfile);
 
+                    // sekme adını yenisi ile değiştiriyoruz
                     $tabName = $tab_Name;
 
                     $_SESSION['MESSAGE'] = "Sekme Güncellendi!";
                }
             }else{
+                // eger yeni dosya yüklemesi yapılmadıysa bu kısma giriyoruz ve işlemleri eski dosya yolu ile yapıyoruz
                 $dir = "../pages/".$tabName."";
 
                 foreach(glob($dir . '/*') as $file) {
         
                     unlink($file);
                     }
-                    rename("../pages/".$tabName, "../pages/".$tab_Name);
+                rename("../pages/".$tabName, "../pages/".$tab_Name);
         
                 $myfile = fopen("../pages/".$tab_Name."/index.php", "w") or die("Unable to open file!");
 
                 if ($navPosition == "top") {
-
+                    // eger navbar basta ise ve yeni resim dosyası yoksa burası yazdırılıyor
                     $txt = '<!DOCTYPE html>
                     <html lang="tr">
                     <head>
@@ -296,6 +322,7 @@ if (isset($_POST['newTab_Name']) || isset($_POST['newHeader_Name'])||isset($_POS
                     </body>
                     </html><!-- top -->';
                 }else{
+                    // eger navbar yanda ise ve yeni resim dosyası yoksa burası yazdırılıyor
                     $txt = '<!DOCTYPE html>
                     <html lang="tr">
                     <head>
@@ -357,14 +384,18 @@ if (isset($_POST['newTab_Name']) || isset($_POST['newHeader_Name'])||isset($_POS
                     </html><!--side-->';
                 }
 
+            // dosyayı yazdırıp kapatıyoruz 
             fwrite($myfile, $txt);
             fclose($myfile);
 
+            // sekme adını yenisi ile değiştiriyoruz
             $tabName = $tab_Name;
 
+            // farklı sayfalarda bulundukları için hata mesajı session üzerinden gönderiliyor
             $_SESSION['MESSAGE'] = "Sekme Güncellendi!";
             }
 }
+// İşlemler bitince sayfaya geri dönüyoruz
     header("Location:updatePage.php?name=$tabName"); 
     exit();
 ?>

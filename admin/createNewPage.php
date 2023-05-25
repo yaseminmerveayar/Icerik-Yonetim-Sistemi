@@ -1,20 +1,25 @@
 <?php
-
+// form'dan bilgi gelip gelmediğine göre işlemi başlatıyoruz
 if (isset($_POST['newTabName']) || isset($_POST['newHeaderName'])||isset($_POST['editorData']) || isset($_FILES['formFile']) || isset($_POST['flexRadio'])) {
     
+    // gerekli kısımların doluluğunu kontrol ediyoruz
     if(empty($_POST['newTabName']) || empty($_POST['newHeaderName']) || empty($_POST['editorData']) || empty($_POST['flexRadio'])){
         $errMessage = "Sekme,Başlık ve Metin boş bırakılamaz";
     }
+    // kabul edeceğimiz dosya uzantılarını belirtiyoruz
     $fileExtensionsAllowed = ['jpeg','jpg','png'];
 
+    // form'dan gelen değerleri değişkenlere yazdırıyoruz 
     $tabName = $_POST['newTabName'];
     $headerName = $_POST['newHeaderName'];
     $editorData = $_POST['editorData'];
     $navPosition = $_POST['flexRadio'];
     $image_path_str = "";
 
+    // form'dan gelen dosya bilgilerini değişkenlere yazdırıyoruz 
     $image_path = $_FILES['formFile']; 
 
+    // dosya işlemleri
     $target_dir = "../images/";
     $tmp_name = $image_path['tmp_name'];
     $file_name = $image_path['name'];
@@ -22,6 +27,7 @@ if (isset($_POST['newTabName']) || isset($_POST['newHeaderName'])||isset($_POST[
     $tmp = explode('.',$file_name);
     $fileExtension = strtolower(end($tmp));
 
+    // pages içindeki dosya isimlerini kontrol ederek aynı olmaması için bir döngü oluşturuyoruz 
     $dir    = '../pages';
     $scanned_directory = array_diff(scandir($dir), array('..', '.'));
 
@@ -31,52 +37,66 @@ if (isset($_POST['newTabName']) || isset($_POST['newHeaderName'])||isset($_POST[
         };
     }
 
+    // eğer form ile bir dosya gönderildiyse buraya giriyoruz
     if(!empty($file_name))
     {
+        // dosya zaten var mı kontrol 
         if(!file_exists($target_dir))
         {
             mkdir($target_dir);
         }
 
+        //    dosya uzantısı kontrol 
         if (! in_array($fileExtension,$fileExtensionsAllowed)) {
         $errMessage = "This file extension is not allowed. Please upload a JPEG or PNG file";
         }
     
+        //    dosya boyutu kontrol 
         if ($file_size > 10000000) {
         $errMessage = "File exceeds maximum size (10MB)";
         }
+        //    eğer hata mesajı yok ise 
         if (empty($errMessage)) {  
+            // dosyayı yükleyeceğimiz dosya yolunu veriyoruz
             $uploadPath = $target_dir. $file_name;
             $image_path_str = "../../images/" . $file_name;
 
+            //    dosyayı adrese yüklüyoruz
             @move_uploaded_file($tmp_name, $uploadPath);
         }
     }
 
     if (empty($errMessage)) {  
+    // sekme adı ile bir dosya oluşturuyoruz 
     $dir = dirname("../pages/".$tabName."/index.php");
     mkdir( $dir , 0755, true);
 
     $message = "Sekme eklendi!";
 
     $htmlText = file_get_contents("../index.php");
-
+    // sayfanın tema özelliklerini almak için dom ile html sayfasını alıyoruz 
     $dom = new DOMDocument();
     @$dom->loadHTML($htmlText);
 
+    // navbar rengini alıyoruz 
     foreach ($dom->getElementsByTagName("nav") as $a) {
         $navColor = $a->getAttribute("style");
         break;
-      }
-      foreach ($dom->getElementsByTagName("a") as $a) {
-        $navTextColor = $a->getAttribute("style");
-        $text = $a->nodeValue;
-        break;
-      }
+    }
 
+    // navbar metin rengini ve logo adını alıyoruz 
+    foreach ($dom->getElementsByTagName("a") as $a) {
+    $navTextColor = $a->getAttribute("style");
+    $text = $a->nodeValue;
+    break;
+    }
+
+    // oluşturduğumuz dosyayı açıyoruz
     $myfile = fopen("../pages/".$tabName."/index.php", "w") or die("Unable to open file!");
 
+    // navbar pozisyonuna göre yazacağımız html text'i degisiyor
     if ($navPosition == "top") {
+        // eger navbar basta ise burası yazdırılıyor
         $txt = '<!DOCTYPE html>
         <html lang="tr">
         <head>
@@ -141,6 +161,7 @@ if (isset($_POST['newTabName']) || isset($_POST['newHeaderName'])||isset($_POST[
         </body>
         </html><!-- top -->';
     }else{
+        // eger navbar yanda ise burası yazdırılıyor
         $txt = '<!DOCTYPE html>
         <html lang="tr">
           <head>
@@ -202,7 +223,7 @@ if (isset($_POST['newTabName']) || isset($_POST['newHeaderName'])||isset($_POST[
         </html><!--side-->';
     }
     
-
+    // dosyaya txt değerini yazıp dosyayı kapatıyoruz 
     fwrite($myfile, $txt);
     fclose($myfile);
     }
